@@ -6,7 +6,7 @@ name: michellejw
 # If you want to omit the line-break after the end of text, use `>-` instead.
 description: >
   Glucose & insulin data. Maybe I'll think of a better description at some point... 
-  (hint to myself: update the _config.yml file)
+  (hint to myself: update the _config.yml file). 
 
 # Build settings
 
@@ -31,9 +31,9 @@ minima:
   #   - { platform: dribbble,       user_url: "https://dribbble.com/jekyll" }
   #   - { platform: facebook,       user_url: "https://www.facebook.com/jekyll" }
   #   - { platform: flickr,         user_url: "https://www.flickr.com/photos/jekyll" }
-  #   - { platform: github,         user_url: "https://github.com/jekyll/minima" }
+    - { platform: github,         user_url: "https://github.com/michellejw/sugar" }
   #   - { platform: google_scholar, user_url: "https://scholar.google.com/citations?user=qc6CJjYAAAAJ" }
-  #   - { platform: instagram,      user_url: "https://www.instagram.com/jekyll" }
+    # - { platform: instagram,      user_url: "https://www.instagram.com/vector.michelle" }
   #   - { platform: keybase,        user_url: "https://keybase.io/jekyll" }
   #   - { platform: linkedin,       user_url: "https://www.linkedin.com/in/jekyll" }
   #   - { platform: microdotblog,   user_url: "https://micro.blog/jekyll" }
