@@ -12,4 +12,4 @@ Here's the equipment I'm working with:
 - Omnipod 5 insulin pump [link](https://www.omnipod.com/what-is-omnipod/omnipod-5)
 - Dexcom G6 continuous glucose monitor
 
-I have a Glooko account where data from both of these devices is collated and analyzed. As awesome as it is, I don't always see exactly the information I want to see on the Glooko site which is what prompted me to do my own data crunching. Glooko has a nice export feature where you can export all of your data (basal, bolus, cgm, alarms, etc.) into several csv files. I've basically dumped this data as-is into the data folder in my "sugar" github repo.
+I have a [Glooko](https://glooko.com/) account where data from both of these devices is collated and analyzed. As awesome as it is, I don't always see exactly the information I want to see on the Glooko site which is what prompted me to do my own data crunching. Glooko has a nice export feature where you can export all of your data (basal, bolus, cgm, alarms, etc.) into several csv files. I've basically dumped this data as-is into the data folder in my "sugar" github repo.
