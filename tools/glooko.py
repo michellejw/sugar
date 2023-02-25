@@ -3,6 +3,7 @@
 """
 
 import pandas as pd
+import numpy as np
 
 def read_all(data_folder):
     """
@@ -34,6 +35,9 @@ def read_all(data_folder):
         names=["time", "insulin_type", "bg_input", "carbs_input", "carb_ratio",\
             "insulin_delivered", "initial_delivery", "extended_delivery", "sn_omni"])
     df_bolus_data["time"] = pd.to_datetime(df_bolus_data["time"])
+    # Extract carb correction and insulin correction from bolus dataframe; add as new columns
+    df_bolus_data["carb_correction"] = np.divide(df_bolus_data["carbs_input"], df_bolus_data["carb_ratio"])
+    df_bolus_data["insulin_correction"] = df_bolus_data["insulin_delivered"] - df_bolus_data["carb_correction"]
 
     # Load and format basal data
     df_basal_data = pd.read_csv(data_folder + r"/Insulin data/basal_data.csv", header=1,\
