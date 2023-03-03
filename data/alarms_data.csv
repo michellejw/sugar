@@ -1,5 +1,10 @@
-﻿Name: Alma Wray,Date Range: 2022-11-27 -2023-02-24
+﻿Name: Alma Wray,Date Range: 2022-12-03 -2023-03-02
 Timestamp,Alarm/Event,Serial Number
+2023-03-01 14:48,Pod is nearing expiration,Insulet Omnipod 5
+2023-03-01 10:48,Pod will expire at user set time,Insulet Omnipod 5
+2023-02-28 17:44,CGM values not received for more than an hour (Horizon).,Insulet Omnipod 5
+2023-02-27 10:14,Glucose levels below configured threshold.,Insulet Omnipod 5
+2023-02-25 14:02,Pod will expire at user set time,Insulet Omnipod 5
 2023-02-22 17:14,Pod will expire at user set time or expiration is imminent,Insulet Omnipod 5
 2023-02-22 10:13,Pod is nearing expiration,Insulet Omnipod 5
 2023-02-22 06:12,Pod will expire at user set time,Insulet Omnipod 5
