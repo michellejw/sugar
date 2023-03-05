@@ -137,3 +137,5 @@ dmypy.json
 notebooks/.ipynb_checkpoints
 
 _site/
+
+data/
