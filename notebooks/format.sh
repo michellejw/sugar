@@ -12,7 +12,7 @@ filename=$3 # new file name
 jupyter nbconvert --to html $nb
 
 # Add header
-echo "---\nlayout: post\ntitle: "$title"\n---\n\n\n{% raw %}\n$(cat ${nb%.ipynb}.html)" > ${nb%.ipynb}.html
+echo "---\nlayout: post\ntitle: \""$title"\"\n---\n\n\n{% raw %}\n$(cat ${nb%.ipynb}.html)" > ${nb%.ipynb}.html
 
 # Add the last line to end of file
 echo '{% endraw %}' >> ${nb%.ipynb}.html
