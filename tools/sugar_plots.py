@@ -7,7 +7,7 @@ This module contains functions for plotting both blood glucose and insulin data.
 import matplotlib.pyplot as plt
 import seaborn as sns
 # import pandas as pd
-import tools.glooko as gl
+import glooko as gl
 
 
 def daily_tir(data_folder, min_target=70, max_target=180):

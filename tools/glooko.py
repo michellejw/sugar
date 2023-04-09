@@ -4,7 +4,7 @@
 
 import pandas as pd
 import numpy as np
-import tools.stats as st
+import stats as st
 
 
 def read_all(data_folder, min_target=70, max_target=180):
@@ -107,6 +107,6 @@ def read_all(data_folder, min_target=70, max_target=180):
 if __name__ == "__main__":
     # Demonstrate usage
     DATA_FOLDER = r"data"
-    df_cgm, df_bolus, df_basal, df_insulin = read_all(DATA_FOLDER)
+    df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = read_all(DATA_FOLDER)
 
     print('breakpoint here...')
