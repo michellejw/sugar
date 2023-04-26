@@ -3,11 +3,12 @@
 This module contains functions for plotting both blood glucose and insulin data.
 
 """
+import sys
+sys.path.append("../")
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-# import pandas as pd
-import glooko as gl
+import tools.glooko as gl
 
 
 def daily_tir(data_folder, min_target=70, max_target=180):
@@ -58,3 +59,18 @@ def daily_tir(data_folder, min_target=70, max_target=180):
     ax.set_title("Target range: " + str(min_target) + " - " + str(max_target) + " mg/dL")
 
     return fig, ax
+
+
+def merge_data(folder_list, output_file):
+    """
+    Combine multiple downloaded glooko folders and save the non-overlapping time series.
+
+    Example usage:
+    merge_data(["../data/glooko01", "../data/glooko02"], "../)
+
+    Args:
+        folder_list (list): list of strings, which are paths to folders each containing downloaded Glooko data.
+        output_file (str): Path and file name for the output pickle file
+
+    """
+

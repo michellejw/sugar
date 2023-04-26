@@ -1,3 +1,3 @@
 # sugar
 
-Exploring glucose and insulin data
+Exploring glucose and insulin data.

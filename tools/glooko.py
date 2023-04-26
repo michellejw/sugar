@@ -1,10 +1,11 @@
 """Tools for loading Glooko data
 
 """
-
+import sys
+sys.path.append("../")
+import tools.stats as st
 import pandas as pd
 import numpy as np
-import stats as st
 
 
 def read_all(data_folder, min_target=70, max_target=180):
