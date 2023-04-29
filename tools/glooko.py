@@ -3,12 +3,14 @@
 """
 import sys
 sys.path.append("../")
+from os import path
 import tools.stats as st
+# import stats as st
 import pandas as pd
 import numpy as np
 
 
-def read_all(data_folder, min_target=70, max_target=180):
+def read_all(data_folder, min_target=70, max_target=180, match_date_ranges=True):
     """
     Read all of the data and return a series of pandas data frames
     
@@ -22,6 +24,7 @@ def read_all(data_folder, min_target=70, max_target=180):
     Keyword Args:
         min_target (number): lower bound of blood glucose range (mg/dL)
         max_target (number): upper bound of blood glucose range (mg/dL)
+        match_date_ranges (bool): flag indicating whether to reduce the daily stats so that they all have the same length (default = True). This is because sometimes CGM and insulin/pump data are not the same length.
         
     Returns:
         A 4-element tuple
@@ -34,7 +37,8 @@ def read_all(data_folder, min_target=70, max_target=180):
     
     """
     # Load and format CGM data
-    df_cgm_data = pd.read_csv(data_folder + r"/cgm_data.csv", header=1,\
+    cgm_file = path.normpath(data_folder + r"/cgm_data.csv")
+    df_cgm_data = pd.read_csv(cgm_file, header=1,\
         names=["time", "bg", "sn_cgm"])
     df_cgm_data["time"] = pd.to_datetime(df_cgm_data["time"])
     df_cgm_data["yearday"] = st.get_yeardays(df_cgm_data)
@@ -48,7 +52,8 @@ def read_all(data_folder, min_target=70, max_target=180):
 
     
     # Load and format bolus data
-    df_bolus_data = pd.read_csv(data_folder + r"/Insulin data/bolus_data.csv", header=1, 
+    bolus_file = path.normpath(data_folder + r"/Insulin data/bolus_data.csv")
+    df_bolus_data = pd.read_csv(bolus_file, header=1, 
                                 names=["time", "insulin_type", "bg_input", "carbs_input", "carb_ratio", 
                                        "insulin_delivered", "initial_delivery", "extended_delivery", 
                                        "sn_omni"])
@@ -59,14 +64,16 @@ def read_all(data_folder, min_target=70, max_target=180):
     df_bolus_data["insulin_correction"] = df_bolus_data["insulin_delivered"] - df_bolus_data["carb_correction"]
 
     # Load and format basal data
-    df_basal_data = pd.read_csv(data_folder + r"/Insulin data/basal_data.csv", header=1,\
+    basal_file = path.normpath(data_folder + r"/Insulin data/basal_data.csv")
+    df_basal_data = pd.read_csv(basal_file, header=1,\
         names=["time", "insulin_type", "duration", "percentage", "rate", "insulin_delivered",\
             "sn_omni"])
     df_basal_data.drop("sn_omni", axis=1, inplace=True)
     df_basal_data["time"] = pd.to_datetime(df_basal_data["time"])
 
     # Load and format insulin data
-    df_insulin_data = pd.read_csv(data_folder + r"/Insulin data/insulin_data.csv", header=1,\
+    insulin_file = path.normpath(data_folder + r"/Insulin data/insulin_data.csv")
+    df_insulin_data = pd.read_csv(insulin_file, header=1,\
         names=["time", "total_bolus", "total_insulin", "total_basal", "sn_omni"])
     df_insulin_data.drop("sn_omni", axis=1, inplace=True)
     df_insulin_data["time"] = pd.to_datetime(df_insulin_data["time"])
@@ -102,12 +109,36 @@ def read_all(data_folder, min_target=70, max_target=180):
     df_cgm_daily["pct_below"] = pct_below
     df_cgm_daily["pct_inrange"] = pct_inrange
 
+    # make sure the date ranges match
+    cgm_in_insulin = df_cgm_daily["yearday"].isin(df_insulin_data["yearday"])
+    insulin_in_cgm = df_insulin_data["yearday"].isin(df_cgm_daily["yearday"])
+
+    if match_date_ranges:
+        df_cgm_daily = df_cgm_daily[cgm_in_insulin]
+        df_insulin_data = df_insulin_data[insulin_in_cgm]
+
     return df_cgm_data, df_bolus_data, df_basal_data, df_insulin_data, df_cgm_daily
+
+
+def merge_data(folder_list, output_file):
+    """
+    Combine multiple downloaded glooko folders and save the non-overlapping time series.
+
+    Example usage:
+    merge_data(["../data/glooko01", "../data/glooko02"], "../)
+
+    Args:
+        folder_list (list): list of strings, which are paths to folders each containing downloaded Glooko data.
+        output_file (str): Path and file name for the output pickle file
+
+    """
 
 
 if __name__ == "__main__":
     # Demonstrate usage
-    DATA_FOLDER = r"data"
+    DATA_FOLDER = r"data/glooko"
     df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = read_all(DATA_FOLDER)
 
     print('breakpoint here...')
+
+

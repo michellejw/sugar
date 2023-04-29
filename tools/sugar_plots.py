@@ -61,16 +61,8 @@ def daily_tir(data_folder, min_target=70, max_target=180):
     return fig, ax
 
 
-def merge_data(folder_list, output_file):
+def plot_tir_vs_tdi():
+    """Plot Time in Range vs Total Daily Insulin
+    
+    
     """
-    Combine multiple downloaded glooko folders and save the non-overlapping time series.
-
-    Example usage:
-    merge_data(["../data/glooko01", "../data/glooko02"], "../)
-
-    Args:
-        folder_list (list): list of strings, which are paths to folders each containing downloaded Glooko data.
-        output_file (str): Path and file name for the output pickle file
-
-    """
-
