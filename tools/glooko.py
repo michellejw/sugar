@@ -4,8 +4,9 @@
 import sys
 sys.path.append("../")
 from os import path
-import tools.stats as st
-# import stats as st
+import glob
+# import tools.stats as st
+import stats as st
 import pandas as pd
 import numpy as np
 
@@ -120,7 +121,7 @@ def read_all(data_folder, min_target=70, max_target=180, match_date_ranges=True)
     return df_cgm_data, df_bolus_data, df_basal_data, df_insulin_data, df_cgm_daily
 
 
-def merge_data(folder_list, output_file):
+def merge_data(folder_list, out_folder):
     """
     Combine multiple downloaded glooko folders and save the non-overlapping time series.
 
@@ -132,12 +133,47 @@ def merge_data(folder_list, output_file):
         output_file (str): Path and file name for the output pickle file
 
     """
+    # Create empty dataframes
+    df_cgm0 = pd.DataFrame(columns=['time', 'bg', 'dayofyear', 'year', 'yearday'])
+    df_bolus0 = pd.DataFrame(columns=['time', 'insulin_type', 'bg_input', 'carbs_input', 'carb_ratio',
+                                      'insulin_delivered', 'initial_delivery', 'extended_delivery', 'carb_correction', 'insulin_correction'])
+    df_basal0 = pd.DataFrame(columns=['time', 'insulin_type', 'duration', 'percentage', 'rate',
+                                     'insulin_delivered'])
+    df_insulin0 = pd.DataFrame(columns=['time', 'total_bolus', 'total_insulin', 'total_basal', 'dayofyear',
+                                        'year', 'yearday'])
+    df_cgm_daily0 = pd.DataFrame(columns=['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max', 'yearday',
+                                          'time', 'pct_above', 'pct_below', 'pct_inrange'])
+
+    for folder in folder_list:
+        # Read files and create dataframes
+        df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = read_all(folder)
+
+        # Concatenate the new data
+        df_cgm0 = pd.concat((df_cgm0, df_cgm))
+        df_bolus0 = pd.concat((df_bolus0, df_bolus))
+        df_basal0 = pd.concat((df_basal0, df_basal))
+        df_insulin = pd.concat((df_insulin0, df_insulin))
+        df_cgm_daily0 = pd.concat((df_cgm_daily0, df_cgm_daily))
+    
+    # Remove duplicate rows
+    df_cgm_daily0.drop_duplicates(inplace=True)
+    df_bolus0.drop_duplicates(inplace=True)
+    df_basal0.drop_duplicates(inplace=True)
+    df_insulin0.drop_duplicates(inplace=True)
+    df_cgm_daily0.drop_duplicates(inplace=True)
+
+
+    return df_cgm_daily0, df_bolus0, df_basal0, df_insulin0, df_cgm_daily0
 
 
 if __name__ == "__main__":
     # Demonstrate usage
     DATA_FOLDER = r"data/glooko"
-    df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = read_all(DATA_FOLDER)
+    # df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = read_all(DATA_FOLDER)
+
+    folders = glob.glob("data/*/")
+    outfolder = "data/"
+    merge_data(folders, outfolder)
 
     print('breakpoint here...')
 
