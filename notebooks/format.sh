@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# The purpose of this script is to prepare existing jupyter notebooks that are stored in the
+# "notebooks" folder for sharing on github pages. This script converts them into html files and puts
+# them into the _posts folder. 
+# 
 # Make sure this script is executable using chmod +x format.sh
 # Then just run it with the following command line args, for example:
 # ./format.sh "glucose-part06.ipynb" "Post 6: bla bla" "2023-03-06-data_part06.html"

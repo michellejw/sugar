@@ -5,8 +5,8 @@ import sys
 sys.path.append("../")
 from os import path
 import glob
-# import tools.stats as st
-import stats as st
+import tools.stats as st
+# import stats as st
 import pandas as pd
 import numpy as np
 
@@ -28,7 +28,7 @@ def read_all(data_folder, min_target=70, max_target=180, match_date_ranges=True)
         match_date_ranges (bool): flag indicating whether to reduce the daily stats so that they all have the same length (default = True). This is because sometimes CGM and insulin/pump data are not the same length.
         
     Returns:
-        A 4-element tuple
+        A 5-element tuple
         
         - **df_cgm** (pandas df): pandas dataframe containing CGM time series data
         - **df_bolus** (pandas df): Bolus data
@@ -121,18 +121,30 @@ def read_all(data_folder, min_target=70, max_target=180, match_date_ranges=True)
     return df_cgm_data, df_bolus_data, df_basal_data, df_insulin_data, df_cgm_daily
 
 
-def merge_data(folder_list, out_folder):
+def merge_data(main_folder):
     """
     Combine multiple downloaded glooko folders and save the non-overlapping time series.
 
     Example usage:
-    merge_data(["../data/glooko01", "../data/glooko02"], "../)
+    df_cgm_daily, df_bolus, df_basal, df_insulin = merge_data("../data")
 
     Args:
-        folder_list (list): list of strings, which are paths to folders each containing downloaded Glooko data.
-        output_file (str): Path and file name for the output pickle file
+        main_folder (string): Main data folder path and filename
+
+    Returns:
+        A 5-element tuple
+        
+        - **df_cgm** (pandas df): pandas dataframe containing CGM time series data
+        - **df_bolus** (pandas df): Bolus data
+        - **df_basal** (pandas df): Basal data
+        - **df_insulin** (pandas df): Insulin corrections data
+        - **df_cgm_daily** (pandas df): Various daily BG stats
 
     """
+
+    #  TODO: Check that sub-folders do contain properly-formatted Glooko data. If none of the folders contain Glooko data, or there ARE no sub-folders, throw an error. 
+    folder_list = glob.glob(path.join(main_folder, "*/"))
+
     # Create empty dataframes
     df_cgm0 = pd.DataFrame(columns=['time', 'bg', 'dayofyear', 'year', 'yearday'])
     df_bolus0 = pd.DataFrame(columns=['time', 'insulin_type', 'bg_input', 'carbs_input', 'carb_ratio',
@@ -156,14 +168,13 @@ def merge_data(folder_list, out_folder):
         df_cgm_daily0 = pd.concat((df_cgm_daily0, df_cgm_daily))
     
     # Remove duplicate rows
-    df_cgm_daily0.drop_duplicates(inplace=True)
+    df_cgm0.drop_duplicates(inplace=True)
     df_bolus0.drop_duplicates(inplace=True)
     df_basal0.drop_duplicates(inplace=True)
     df_insulin0.drop_duplicates(inplace=True)
     df_cgm_daily0.drop_duplicates(inplace=True)
 
-
-    return df_cgm_daily0, df_bolus0, df_basal0, df_insulin0, df_cgm_daily0
+    return df_cgm0, df_bolus0, df_basal0, df_insulin0, df_cgm_daily0
 
 
 if __name__ == "__main__":
@@ -171,9 +182,9 @@ if __name__ == "__main__":
     DATA_FOLDER = r"data/glooko"
     # df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = read_all(DATA_FOLDER)
 
-    folders = glob.glob("data/*/")
-    outfolder = "data/"
-    merge_data(folders, outfolder)
+    # folders = glob.glob("data/*/")
+    # outfolder = "data/"
+    # merge_data(folders, outfolder)
 
     print('breakpoint here...')
 
