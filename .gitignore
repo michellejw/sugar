@@ -140,3 +140,5 @@ _site/
 
 data/glooko/
 data/
+
+notebooks/debug.py

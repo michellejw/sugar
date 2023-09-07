@@ -121,12 +121,12 @@ def read_all(data_folder, min_target=70, max_target=180, match_date_ranges=True)
     return df_cgm_data, df_bolus_data, df_basal_data, df_insulin_data, df_cgm_daily
 
 
-def merge_data(main_folder):
+def merge_data(main_folder, min_target=70, max_target=180):
     """
     Combine multiple downloaded glooko folders and save the non-overlapping time series.
 
     Example usage:
-    df_cgm_daily, df_bolus, df_basal, df_insulin = merge_data("../data")
+    df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = merge_data("../data")
 
     Args:
         main_folder (string): Main data folder path and filename
@@ -158,7 +158,7 @@ def merge_data(main_folder):
 
     for folder in folder_list:
         # Read files and create dataframes
-        df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = read_all(folder)
+        df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = read_all(folder, min_target=70, max_target=180)
 
         # Concatenate the new data
         df_cgm0 = pd.concat((df_cgm0, df_cgm))
@@ -180,7 +180,7 @@ def merge_data(main_folder):
 if __name__ == "__main__":
     # Demonstrate usage
     DATA_FOLDER = r"data/glooko"
-    # df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = read_all(DATA_FOLDER)
+    # df_cgm, df_bolus, df_basal, df_insulin, df_cgm_daily = read_all(DATA_FOLDER, min_target=70, max_target=180)
 
     # folders = glob.glob("data/*/")
     # outfolder = "data/"

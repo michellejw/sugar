@@ -34,8 +34,7 @@ def daily_tir(data_folder, min_target=70, max_target=180):
     """
 
     # Load daily CGM stats
-    _, _, _, _, df_cgm_daily = gl.read_all(data_folder, 
-                                           min_target=min_target, max_target=max_target)
+    _, _, _, _, df_cgm_daily = gl.merge_data(data_folder, min_target=min_target, max_target=max_target)
 
     # Generate bar plot
     fig, ax = plt.subplots(1,1, figsize=(8,4))

@@ -14,7 +14,7 @@ def get_yeardays(df):
 
     Returns:
     pandas series: year-day
-
+    
     """
     df["dayofyear"] = df["time"].dt.dayofyear
     df["year"] = df["time"].dt.year
