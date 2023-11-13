@@ -142,3 +142,5 @@ data/glooko/
 data/
 
 notebooks/debug.py
+
+.idea/
