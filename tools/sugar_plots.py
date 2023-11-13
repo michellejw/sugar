@@ -58,10 +58,3 @@ def daily_tir(data_folder, min_target=70, max_target=180):
     ax.set_title("Target range: " + str(min_target) + " - " + str(max_target) + " mg/dL")
 
     return fig, ax
-
-
-def plot_tir_vs_tdi():
-    """Plot Time in Range vs Total Daily Insulin
-    
-    
-    """
